@@ -2,7 +2,12 @@
 
 import { IChainInfo, ICrossRule, Orbiter } from 'orbiter-bridge-sdk'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   Select,
   SelectContent,
@@ -200,12 +205,15 @@ export default function Bridge() {
 
   return (
     <main className="container flex-1 flex flex-col justify-center items-center">
-      <Card className="max-w-[700px] w-full flex flex-col rounded-3xl">
-        <CardTitle className="p-4">Bridge</CardTitle>
+      <Card className="max-w-[700px] p-4 w-full flex flex-col rounded-3xl">
+        <CardTitle>Bridge</CardTitle>
+        <CardDescription className="mt-2">
+          Only currently supported chains can be selected.
+        </CardDescription>
         <CardContent className="flex flex-1 py-[14px] px-[24px] flex-col">
-          <div className="flex rounded-2xl bg-[#3f415b]/30 p-5 flex-col">
+          <div className="flex rounded-2xl p-4 flex-col border border-sky-500/20">
             <div className="mb-2">from</div>
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between flex-wrap items-end">
               <Select
                 value={sourceChain}
                 onValueChange={(value) => {
@@ -213,7 +221,7 @@ export default function Bridge() {
                   setSourceChain(value)
                 }}
               >
-                <SelectTrigger className="w-[176px] bg-[#3f415b]/30 rounded-xl h-[40px]">
+                <SelectTrigger className="w-[176px] mr-2 rounded-xl h-[40px]">
                   <SelectValue defaultValue={''} />
                 </SelectTrigger>
                 <SelectContent side="bottom" className="max-h-[250px]">
@@ -241,7 +249,7 @@ export default function Bridge() {
                   setSourceToken(value)
                 }}
               >
-                <SelectTrigger className="w-[176px] ml-2 bg-[#3f415b]/30 rounded-xl h-[40px]">
+                <SelectTrigger className="w-[176px] mr-2 rounded-xl h-[40px]">
                   <SelectValue defaultValue={''} />
                 </SelectTrigger>
                 <SelectContent side="bottom" className="max-h-[250px]">
@@ -253,7 +261,7 @@ export default function Bridge() {
                 </SelectContent>
               </Select>
               <Input
-                className="h-[40px] mx-2 rounded-xl flex-1"
+                className="h-[40px] min-w-[70px] mr-2 rounded-xl flex-1"
                 placeholder={
                   rule.maxAmt && rule.minAmt
                     ? `${rule.maxAmt} > value > ${rule.minAmt}`
@@ -274,9 +282,9 @@ export default function Bridge() {
             <div className="mr-4">Real Send:</div>
             <div>{sendAmount}</div>
           </div>
-          <div className="flex rounded-2xl bg-[#3f415b]/30 p-5 flex-col">
+          <div className="flex rounded-2xl p-4 flex-col border border-sky-500/20">
             <div className="mb-2">To</div>
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between flex-wrap items-end">
               <Select
                 value={destChain}
                 onValueChange={(value) => {
@@ -284,7 +292,7 @@ export default function Bridge() {
                   setDestChain(value)
                 }}
               >
-                <SelectTrigger className="w-[176px] bg-[#3f415b]/30 rounded-xl h-[40px]">
+                <SelectTrigger className="w-[176px] mr-2 rounded-xl h-[40px]">
                   <SelectValue defaultValue={''} />
                 </SelectTrigger>
                 <SelectContent side="bottom" className="max-h-[250px]">
@@ -312,7 +320,7 @@ export default function Bridge() {
                   setDestToken(value)
                 }}
               >
-                <SelectTrigger className="w-[176px] ml-2 bg-[#3f415b]/30 rounded-xl h-[40px]">
+                <SelectTrigger className="w-[176px] mr-2 rounded-xl h-[40px]">
                   <SelectValue defaultValue={''} />
                 </SelectTrigger>
                 <SelectContent side="bottom" className="max-h-[250px]">
@@ -323,16 +331,16 @@ export default function Bridge() {
                   ))}
                 </SelectContent>
               </Select>
-              <div className="h-[40px] mx-2 flex items-end rounded-xl flex-1">
+              <div className="h-[40px] ml-2 flex items-end rounded-xl flex-1">
                 Receive: {receiveAmount || 0}
               </div>
             </div>
           </div>
           <div
-            className="flex py-4 cursor-pointer mt-4 justify-center items-center bg-[#3f415b]/30 rounded-2xl text-[20px]"
+            className="flex py-4 cursor-pointer mt-4 justify-center items-center border border-sky-500/20 rounded-2xl text-[20px]"
             onClick={() => handlerBridge()}
           >
-            To Bridge
+            Bridge
           </div>
         </CardContent>
       </Card>
