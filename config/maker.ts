@@ -1,0 +1,1 @@
+export const mainnetMakerAddress = '0x0a88bc5c32b684d467b43c06d9e0899efeaf59df'
