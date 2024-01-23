@@ -2,7 +2,6 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from 'dayjs'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { chainsJson } from '@/config/chains'
 
 dayjs.extend(relativeTime)
 export interface IStatisticItem {
@@ -53,16 +52,6 @@ export function formatAddress(
       currentAddress.length,
     )
   )
-}
-
-export const getChainInfoURL = (id: string | number) => {
-  const curChain = chainsJson.find((item) => {
-    if (String(item.chainId) == String(id)) {
-      return item
-    }
-  })
-
-  return curChain?.infoURL || '-'
 }
 
 export function formatCurrency(

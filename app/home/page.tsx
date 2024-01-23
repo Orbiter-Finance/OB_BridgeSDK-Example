@@ -19,8 +19,16 @@ import { Input } from '@/components/ui/input'
 import { useNetwork } from 'wagmi'
 import { useEthersSigner } from '@/hooks/useSigner'
 import { useCheckChainId } from '@/hooks/check-chainId'
-import { appMainnet } from '@/config/env'
 import { toast } from '@/components/ui/use-toast'
+
+const networkSelectList = [
+  {
+    name: 'mainnet',
+  },
+  {
+    name: 'testnet',
+  },
+]
 
 export default function Bridge() {
   const orbiter = useRef({} as Orbiter)
@@ -41,12 +49,14 @@ export default function Bridge() {
   const [sendAmount, setSendAmount] = useState<number | string>('0')
   const [receiveAmount, setReceiveAmount] = useState<string | 0>('')
   const signer = useEthersSigner({ chainId: Number(sourceChain) })
-  const { chains: networkChains } = useNetwork()
+  const { chains: networkChains, chain } = useNetwork()
   const { checkChainIdToMainnet } = useCheckChainId()
   const [filterPairs, setFilterPairs] = useState<{ [k: string]: string[] }>({})
+  const [isMainnet, setIsMainnet] = useState<boolean>(true)
 
   useEffect(() => {
     if (!!Object.keys(chainPairs).length) {
+      setSourceChain('')
       const filterChainPairs: { [k: string]: string[] } = {}
       for (const key in chainPairs) {
         if (networkChains.findIndex((v) => String(v.id) === key) !== -1) {
@@ -55,7 +65,7 @@ export default function Bridge() {
       }
       setFilterPairs(filterChainPairs)
     }
-  }, [chainPairs, networkChains])
+  }, [isMainnet, chain, chainPairs, networkChains])
 
   useEffect(() => {
     if (!!Object.keys(filterPairs).length) {
@@ -163,11 +173,15 @@ export default function Bridge() {
   }, [signer])
 
   useEffect(() => {
-    orbiter.current = new Orbiter({
-      isMainnet: appMainnet,
-    })
+    !Object.keys(orbiter.current).length
+      ? (orbiter.current = new Orbiter({
+          isMainnet,
+        }))
+      : orbiter.current.updateConfig({
+          isMainnet,
+        })
     initPage()
-  }, [])
+  }, [isMainnet])
 
   const resetAmounts = () => {
     setAmount('')
@@ -206,7 +220,26 @@ export default function Bridge() {
   return (
     <main className="container flex-1 flex flex-col justify-center items-center">
       <Card className="max-w-[700px] p-4 w-full flex flex-col rounded-3xl">
-        <CardTitle>Bridge</CardTitle>
+        <CardTitle className="flex justify-between">
+          Bridge{' '}
+          <Select
+            value={isMainnet ? 'mainnet' : 'testnet'}
+            onValueChange={(value) => {
+              setIsMainnet(value === 'mainnet')
+            }}
+          >
+            <SelectTrigger className="w-[176px] mr-2 rounded-xl h-[40px]">
+              <SelectValue defaultValue={''} />
+            </SelectTrigger>
+            <SelectContent side="bottom" className="max-h-[250px]">
+              {networkSelectList.map((item) => (
+                <SelectItem key={item.name} value={item.name}>
+                  <div className="flex items-center">{item.name}</div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardTitle>
         <CardDescription className="mt-2">
           Only currently supported chains can be selected.
         </CardDescription>

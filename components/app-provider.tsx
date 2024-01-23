@@ -17,18 +17,47 @@ import {
   argentWallet,
 } from '@rainbow-me/rainbowkit/wallets'
 import {
-  optimismGoerli,
-  optimism,
-  goerli,
   mainnet,
   arbitrum,
-  arbitrumSepolia,
   zkSync,
+  optimism,
+  manta,
+  zora,
+  polygon,
+  polygonZkEvm,
+  opBNB,
+  mantle,
+  kroma,
+  linea,
+  base,
+  scroll,
+  bsc,
+  arbitrumNova,
+  zkFair,
 } from 'wagmi/chains'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+import {
+  optimismGoerli,
+  goerli,
+  arbitrumSepolia,
+  zkSyncSepoliaTestnet,
+  polygonZkEvmTestnet,
+  mantaTestnet,
+  zoraSepolia,
+  zoraTestnet,
+  kromaSepolia,
+  lineaTestnet,
+  baseGoerli,
+  baseSepolia,
+  taikoTestnetSepolia,
+  scrollSepolia,
+  scrollTestnet,
+  sepolia,
+  mantleTestnet,
+  bscTestnet,
+} from 'wagmi/chains'
+import { Chain, configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
-import { appMainnet } from '@/config/env'
 import { AppContext } from './app-context'
 import { CHAINS_ICON_LIST } from '@/config/icon'
 import { useTheme } from 'next-themes'
@@ -36,18 +65,46 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { useEffect, useState } from 'react'
 
 const chainsMainnet = [
-  { ...arbitrum },
-  { ...zkSync },
+  mainnet,
+  arbitrum,
+  zkSync,
   { ...optimism, iconUrl: CHAINS_ICON_LIST[optimism.id], name: 'Optimism' },
-  { ...mainnet },
+  manta,
+  zora,
+  polygon,
+  arbitrumNova,
+  zkFair,
+  polygonZkEvm,
+  opBNB,
+  mantle,
+  kroma,
+  linea,
+  base,
+  scroll,
+  bsc,
 ]
 
 const chainsTestnet = [
+  goerli,
+  arbitrumSepolia,
   { ...optimismGoerli, iconUrl: CHAINS_ICON_LIST[optimismGoerli.id] },
-  { ...arbitrumSepolia },
-  { ...goerli },
+  zkSyncSepoliaTestnet,
+  polygonZkEvmTestnet,
+  mantaTestnet,
+  zoraSepolia,
+  zoraTestnet,
+  kromaSepolia,
+  lineaTestnet,
+  baseGoerli,
+  baseSepolia,
+  taikoTestnetSepolia,
+  scrollSepolia,
+  scrollTestnet,
+  sepolia,
+  mantleTestnet,
+  bscTestnet,
 ]
-const currentChains: any = appMainnet ? chainsMainnet : chainsTestnet
+const currentChains: Chain[] = [...chainsMainnet, ...chainsTestnet]
 
 const { chains, publicClient } = configureChains(currentChains, [
   alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID || '' }),
