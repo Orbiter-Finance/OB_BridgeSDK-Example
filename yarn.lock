@@ -7465,10 +7465,10 @@ optionator@^0.9.3:
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
 
-orbiter-bridge-sdk@^1.1.39:
-  version "1.1.39"
-  resolved "https://registry.yarnpkg.com/orbiter-bridge-sdk/-/orbiter-bridge-sdk-1.1.39.tgz#b601bad10c9b6127477a547168702c634b150c41"
-  integrity sha512-tbtQKgLxt+8cSZicFYOVOL1yn7QoRlSKuC8vx9ZzcHPYAHJENjPyPbcz3fyAPqVuEJMzOzPjgvrvs9xFIzU35A==
+orbiter-bridge-sdk@^1.1.41:
+  version "1.1.41"
+  resolved "https://registry.yarnpkg.com/orbiter-bridge-sdk/-/orbiter-bridge-sdk-1.1.41.tgz#c39b3018727a5fa8b1448ec6823de64cf756ce14"
+  integrity sha512-pzTDGOReMkSlC07YPmkr5wBcZnNW2JaxXoSxhwnsTk9orxCNge3WJxVSwAXAncd+LJG03Lru8Wu4LcatGw+9Mw==
   dependencies:
     "@imtbl/imx-sdk" "^1.5.0"
     "@truffle/hdwallet-provider" "^2.1.15"

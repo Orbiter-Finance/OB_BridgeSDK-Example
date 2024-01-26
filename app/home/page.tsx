@@ -16,10 +16,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { useNetwork } from 'wagmi'
+import { useAccount, useNetwork, usePublicClient } from 'wagmi'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useEthersSigner } from '@/hooks/useSigner'
 import { useCheckChainId } from '@/hooks/check-chainId'
 import { toast } from '@/components/ui/use-toast'
+import { cn } from '@/lib/utils'
 
 const networkSelectList = [
   {
@@ -32,7 +34,10 @@ const networkSelectList = [
 
 export default function Bridge() {
   const orbiter = useRef({} as Orbiter)
+
   const [rules, setRules] = useState<ICrossRule[]>([])
+  const [filterPairs, setFilterPairs] = useState<{ [k: string]: string[] }>({})
+  const [isMainnet, setIsMainnet] = useState<boolean>(true)
   const [chains, setChains] = useState<IChainInfo[]>([])
   const [chainPairs, setChainPairs] = useState<{ [k: string]: string[] }>({})
   const [sourceChain, setSourceChain] = useState('')
@@ -49,10 +54,11 @@ export default function Bridge() {
   const [sendAmount, setSendAmount] = useState<number | string>('0')
   const [receiveAmount, setReceiveAmount] = useState<string | 0>('')
   const signer = useEthersSigner({ chainId: Number(sourceChain) })
-  const { chains: networkChains, chain } = useNetwork()
+  const { chains: networkChains = [] } = usePublicClient()
+  const { isConnected } = useAccount()
+  const { chain } = useNetwork()
   const { checkChainIdToMainnet } = useCheckChainId()
-  const [filterPairs, setFilterPairs] = useState<{ [k: string]: string[] }>({})
-  const [isMainnet, setIsMainnet] = useState<boolean>(true)
+  const { openConnectModal = () => {} } = useConnectModal()
 
   useEffect(() => {
     if (!!Object.keys(chainPairs).length) {
@@ -199,6 +205,9 @@ export default function Bridge() {
 
   const handlerBridge = async () => {
     try {
+      if (!isConnected) {
+        return openConnectModal()
+      }
       await checkChainIdToMainnet(sourceChain)
       await orbiter.current.toBridge({
         fromChainID: sourceChain,
@@ -370,10 +379,13 @@ export default function Bridge() {
             </div>
           </div>
           <div
-            className="flex py-4 cursor-pointer mt-4 justify-center items-center border border-sky-500/20 rounded-2xl text-[20px]"
+            className={cn(
+              `flex py-4 cursor-pointer mt-4 justify-center items-center border border-sky-500/20 rounded-2xl text-[20px]`,
+              !isConnected && 'bg-[#4959FF] text-[#fff] rounded-[28px]'
+            )}
             onClick={() => handlerBridge()}
           >
-            Bridge
+            {isConnected? 'Bridge' : 'Connect Wallet'}
           </div>
         </CardContent>
       </Card>
