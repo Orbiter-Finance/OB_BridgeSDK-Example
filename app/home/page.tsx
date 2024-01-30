@@ -59,6 +59,11 @@ export default function Bridge() {
   const { chain } = useNetwork()
   const { checkChainIdToMainnet } = useCheckChainId()
   const { openConnectModal = () => {} } = useConnectModal()
+  const [buttonText, setButtonText] = useState('Connect Wallet')
+
+  useEffect(() => {
+    setButtonText(isConnected ? 'Bridge' : 'Connect Wallet')
+  }, [isConnected])
 
   useEffect(() => {
     if (!!Object.keys(chainPairs).length) {
@@ -181,9 +186,11 @@ export default function Bridge() {
   useEffect(() => {
     !Object.keys(orbiter.current).length
       ? (orbiter.current = new Orbiter({
+          dealerId: '', // Input your dealerId.
           isMainnet,
         }))
       : orbiter.current.updateConfig({
+          dealerId: '', // Input your dealerId.
           isMainnet,
         })
     initPage()
@@ -381,11 +388,11 @@ export default function Bridge() {
           <div
             className={cn(
               `flex py-4 cursor-pointer mt-4 justify-center items-center border border-sky-500/20 rounded-2xl text-[20px]`,
-              !isConnected && 'bg-[#4959FF] text-[#fff] rounded-[28px]'
+              !isConnected && 'bg-[#4959FF] text-[#fff] rounded-[28px]',
             )}
             onClick={() => handlerBridge()}
           >
-            {isConnected? 'Bridge' : 'Connect Wallet'}
+            {buttonText}
           </div>
         </CardContent>
       </Card>
