@@ -1,5 +1,5 @@
 # OB_BridgeSDK-Example
-Is a demo website for orbiter-bridge-sdk
+Is a demo website for @orbiter-finance/bridge-sdk
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

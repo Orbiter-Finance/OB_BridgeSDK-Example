@@ -1,6 +1,6 @@
 'use client'
 
-import { IChainInfo, ICrossRule, Orbiter } from 'orbiter-bridge-sdk'
+import { IChainInfo, ICrossRule, Orbiter } from '@orbiter-finance/bridge-sdk'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Card,
